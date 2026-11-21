@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Order Status | Laundry Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .topbar {
+            background: #173b75;
+            color: white;
+            padding: 20px 6%;
+        }
+
+        .topbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: #bfdbfe;
+        }
+
+        .page {
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 22px;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            margin: 0 0 8px;
+            font-size: 25px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .05);
+        }
+
+        .card h3 {
+            margin: 0 0 20px;
+            color: #173b75;
+            font-size: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 13px;
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .info {
+            margin-top: 22px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .info h4 {
+            margin: 0 0 12px;
+            font-size: 14px;
+            color: #173b75;
+        }
+
+        .info p {
+            margin: 8px 0;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .page {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+
+            .card {
+                padding: 21px;
+            }
+
+            .heading h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h2>🧺 Laundry Shop</h2>
+        <p>Management System</p>
+    </header>
+
+    <main class="page">
+
+        <a href="/" class="back">← Back to Dashboard</a>
+
+        <section class="heading">
+            <h1>Update Order Status</h1>
+            <p>Change the progress of a customer's laundry order.</p>
+        </section>
+
+        <div class="card">
+
+            <h3>Order Status Management</h3>
+
+            {% if message %}
+                <div class="message">{{ message }}</div>
+            {% endif %}
+
+            <form method="POST">
+
+                <label for="order_id">Order ID</label>
+
+                <input
+                    type="text"
+                    id="order_id"
+                    name="order_id"
+                    placeholder="Example: LS-019"
+                    required
+                >
+
+                <label for="new_status">New Order Status</label>
+
+                <select id="new_status" name="new_status" required>
+                    <option value="">Select New Status</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Ready">Ready</option>
+                </select>
+
+                <button type="submit">Update Status</button>
+
+            </form>
+
+            <div class="info">
+                <h4>Available Status Transitions</h4>
+
+                <p><strong>Waiting → Processing</strong></p>
+                <p><strong>Processing → Ready</strong></p>
+                <p>Ready orders cannot be changed.</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Laundry Shop Management System
+    </footer>
+
+</body>
+</html>

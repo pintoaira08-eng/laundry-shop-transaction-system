@@ -1,0 +1,32 @@
+{
+    "name": "Laundry Shop Transaction System",
+    "short_name": "Laundry Shop",
+    "id": "/",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563eb",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/static/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+       }
+    ],
+   
+    "screenshots": [
+        {
+           "src": "/static/screenshot-wide.png",
+           "sizes": "1913x1020",
+           "type": "image/png",
+           "form_factor": "wide"
+       },
+       {
+           "src": "/static/screenshot-mobile.png",
+           "sizes": "387x802",
+           "type": "image/png"
+       }
+    ]
+}

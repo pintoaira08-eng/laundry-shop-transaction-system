@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments | Laundry Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .topbar {
+            background: #173b75;
+            color: white;
+            padding: 20px 6%;
+        }
+
+        .topbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: #bfdbfe;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 22px;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            margin: 0 0 8px;
+            font-size: 25px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .05);
+        }
+
+        .card h3 {
+            margin: 0 0 18px;
+            color: #173b75;
+            font-size: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 9px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 13px 20px;
+            border: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .search-button {
+            width: 100%;
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 13px;
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail span:first-child {
+            color: #64748b;
+        }
+
+        .detail strong {
+            text-align: right;
+        }
+
+        .balance {
+            color: #dc2626;
+            font-size: 18px;
+        }
+
+        .payment-form {
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .payment-form h4 {
+            margin: 0 0 17px;
+            color: #173b75;
+            font-size: 15px;
+        }
+
+        .paid-message {
+            margin-top: 20px;
+            padding: 15px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 400px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #173b75;
+            color: white;
+            padding: 14px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .empty {
+            text-align: center;
+            color: #64748b;
+            padding: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .page {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .heading h1 {
+                font-size: 22px;
+            }
+
+            .detail {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h2>🧺 Laundry Shop</h2>
+        <p>Management System</p>
+    </header>
+
+    <main class="page">
+
+        <a href="/" class="back">← Back to Dashboard</a>
+
+        <section class="heading">
+            <h1>Customer Payments</h1>
+            <p>Manage customer payments and monitor outstanding balances.</p>
+        </section>
+
+        <div class="card">
+
+            <h3>Find Customer Order</h3>
+
+            <form method="POST" action="/payments">
+
+                <label for="order_id">Enter Order ID</label>
+
+                <input
+                    type="text"
+                    id="order_id"
+                    name="order_id"
+                    placeholder="Example: LS-019"
+                    value="{{ request.form.get('order_id', '') }}"
+                    required
+                >
+
+                <button type="submit" name="search" value="1" class="search-button">
+                    Search Order
+                </button>
+
+            </form>
+
+            {% if message %}
+                <div class="message">{{ message }}</div>
+            {% endif %}
+
+        </div>
+
+        {% if order %}
+
+        <div class="card">
+
+            <h3>Payment Details</h3>
+
+            <div class="detail">
+                <span>Order ID</span>
+                <strong>{{ order[0] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Customer Name</span>
+                <strong>{{ order[1] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Total Amount</span>
+                <strong>₱{{ "%.2f"|format(order[5]) }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Amount Paid</span>
+                <strong>₱{{ "%.2f"|format(order[6]) }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Remaining Balance</span>
+                <strong class="balance">
+                    ₱{{ "%.2f"|format(order[5] - order[6]) }}
+                </strong>
+            </div>
+
+            {% if order[6] < order[5] %}
+
+            <div class="payment-form">
+
+                <h4>Record a Payment</h4>
+
+                <form method="POST" action="/payments">
+
+                    <input type="hidden" name="order_id" value="{{ order[0] }}">
+
+                    <label for="payment">Payment Amount (₱)</label>
+
+                    <input
+                        type="number"
+                        id="payment"
+                        name="payment"
+                        min="0.01"
+                        max="{{ order[5] - order[6] }}"
+                        step="0.01"
+                        placeholder="Enter payment amount"
+                        required
+                    >
+
+                    <button type="submit">Record Payment</button>
+
+                </form>
+
+            </div>
+
+            {% else %}
+
+            <div class="paid-message">
+                ✓ This order is fully paid.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+        {% if payment_history %}
+
+        <div class="card">
+
+            <h3>Payment History</h3>
+
+            <div class="table-wrapper">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment Amount</th>
+                            <th>Payment Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for payment in payment_history %}
+
+                        <tr>
+                            <td>
+                                ₱{{ "%.2f"|format(payment[0]) }}
+                            </td>
+
+                            <td>
+                                {{ payment[1] }}
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </main>
+
+    <footer>
+        © 2026 Laundry Shop Management System
+    </footer>
+
+</body>
+</html>

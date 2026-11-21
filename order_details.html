@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details | Laundry Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .topbar {
+            background: #173b75;
+            color: white;
+            padding: 20px 6%;
+        }
+
+        .topbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: #bfdbfe;
+        }
+
+        .page {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .heading {
+            margin-bottom: 22px;
+        }
+
+        .heading h1 {
+            margin: 0 0 7px;
+            font-size: 25px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .05);
+        }
+
+        .card h3 {
+            margin: 0 0 18px;
+            font-size: 16px;
+            color: #173b75;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail span:first-child {
+            color: #64748b;
+        }
+
+        .detail strong {
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .amount {
+            color: #173b75;
+            font-size: 17px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .waiting {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .processing {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .ready {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .page {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .heading h1 {
+                font-size: 22px;
+            }
+
+            .detail {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h2>🧺 Laundry Shop</h2>
+        <p>Management System</p>
+    </header>
+
+    <main class="page">
+
+        <a href="/orders" class="back">← Back to Orders</a>
+
+        <section class="heading">
+            <h1>Order Details</h1>
+            <p>Complete information about this laundry transaction.</p>
+        </section>
+
+        <div class="card">
+
+            <h3>Customer Information</h3>
+
+            <div class="detail">
+                <span>Order ID</span>
+                <strong>{{ order[0] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Customer Name</span>
+                <strong>{{ order[1] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Contact Number</span>
+                <strong>{{ order[2] }}</strong>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Service Information</h3>
+
+            <div class="detail">
+                <span>Service Type</span>
+                <strong>{{ order[3] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Weight</span>
+                <strong>{{ order[4] }} kg</strong>
+            </div>
+
+            <div class="detail">
+                <span>Due Date</span>
+                <strong>{{ order[9] }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Order Status</span>
+                <strong>
+                    {% if order[8] == "Waiting" %}
+                        <span class="badge waiting">Waiting</span>
+                    {% elif order[8] == "Processing" %}
+                        <span class="badge processing">Processing</span>
+                    {% elif order[8] == "Ready" %}
+                        <span class="badge ready">Ready</span>
+                    {% else %}
+                        {{ order[8] }}
+                    {% endif %}
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <h3>Payment Summary</h3>
+
+            <div class="detail">
+                <span>Total Amount</span>
+                <strong class="amount">₱{{ "%.2f"|format(order[5]) }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Amount Paid</span>
+                <strong>₱{{ "%.2f"|format(order[6]) }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Change</span>
+                <strong>₱{{ "%.2f"|format(order[7]) }}</strong>
+            </div>
+
+            <div class="detail">
+                <span>Payment Status</span>
+                <strong>
+                    {% if order[6] <= 0 %}
+                        <span class="badge waiting">Unpaid</span>
+                    {% elif order[6] < order[5] %}
+                        <span class="badge processing">Partially Paid</span>
+                    {% else %}
+                        <span class="badge ready">Fully Paid</span>
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="detail">
+                <span>Remaining Balance</span>
+                <strong class="amount">
+                    ₱{{ "%.2f"|format([order[5] - order[6], 0]|max) }}
+                </strong>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        © 2026 Laundry Shop Management System
+    </footer>
+
+</body>
+</html>

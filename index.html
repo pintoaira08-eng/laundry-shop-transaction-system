@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laundry Shop Management System</title>
+
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <link rel="icon" type="image/png" href="/static/icon-512.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #173b75;
+            color: white;
+            padding: 28px 18px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            padding: 0 12px 30px;
+            border-bottom: 1px solid rgba(255,255,255,.15);
+        }
+
+        .brand h2 {
+            font-size: 20px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            color: #bfdbfe;
+            margin-top: 7px;
+        }
+
+        .nav-title {
+            color: #93c5fd;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 28px 12px 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav a {
+            display: block;
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topbar {
+            background: white;
+            padding: 20px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .topbar h2 {
+            font-size: 20px;
+        }
+
+        .admin {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .content {
+            padding: 35px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .welcome {
+            margin-bottom: 28px;
+        }
+
+        .welcome h1 {
+            font-size: 27px;
+            margin-bottom: 9px;
+        }
+
+        .welcome p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .notice {
+            background: #dcfce7;
+            color: #166534;
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .section-heading {
+            font-size: 17px;
+            margin-bottom: 16px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 23px;
+            text-decoration: none;
+            color: inherit;
+            transition: .2s;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+            border-color: #93c5fd;
+        }
+
+        .card-icon {
+            width: 43px;
+            height: 43px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 21px;
+            margin-bottom: 17px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            margin-bottom: 9px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .card-link {
+            display: inline-block;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 17px;
+        }
+
+        footer {
+            padding: 25px 35px;
+            color: #94a3b8;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .brand {
+                padding-bottom: 15px;
+            }
+
+            .nav-title {
+                margin-top: 18px;
+            }
+
+            .nav {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 5px;
+            }
+
+            .nav a {
+                margin: 0;
+                font-size: 12px;
+                padding: 12px 9px;
+            }
+
+            .topbar {
+                padding: 16px 20px;
+            }
+
+            .content {
+                padding: 25px 18px;
+            }
+
+            .welcome h1 {
+                font-size: 23px;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <h2>🧺 Laundry Shop</h2>
+            <p>Management System</p>
+        </div>
+
+        <p class="nav-title">Main Menu</p>
+
+        <nav class="nav">
+            <a href="/" class="active">⌂ Dashboard</a>
+            <a href="/new-order">＋ New Order</a>
+            <a href="/orders">▤ All Orders</a>
+            <a href="/search">⌕ Search Order</a>
+            <a href="/payments">₱ Payments</a>
+            <a href="/update-status">↻ Update Status</a>
+            <a href="/sales-report">▥ Sales Report</a>
+        </nav>
+
+    </aside>
+
+    <div class="main">
+
+        <header class="topbar">
+            <h2>Dashboard</h2>
+            <span class="admin">Administrator</span>
+        </header>
+
+        <main class="content">
+
+            {% with messages = get_flashed_messages() %}
+                {% for message in messages %}
+                    <div class="notice">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+
+            <section class="welcome">
+                <h1>Welcome to Laundry Shop!</h1>
+                <p>Manage your laundry transactions and monitor your business operations in one place.</p>
+            </section>
+
+            <h3 class="section-heading">Quick Access</h3>
+
+            <section class="dashboard">
+
+                <a href="/new-order" class="card">
+                    <div class="card-icon">＋</div>
+                    <h3>New Order</h3>
+                    <p>Register customers and create new laundry transactions.</p>
+                    <span class="card-link">Create Order →</span>
+                </a>
+
+                <a href="/orders" class="card">
+                    <div class="card-icon">▤</div>
+                    <h3>All Orders</h3>
+                    <p>View and manage all recorded customer orders.</p>
+                    <span class="card-link">View Orders →</span>
+                </a>
+
+                <a href="/search" class="card">
+                    <div class="card-icon">⌕</div>
+                    <h3>Search Order</h3>
+                    <p>Quickly find a transaction using its Order ID.</p>
+                    <span class="card-link">Search Now →</span>
+                </a>
+
+                <a href="/payments" class="card">
+                    <div class="card-icon">₱</div>
+                    <h3>Payments</h3>
+                    <p>Record customer payments and check remaining balances.</p>
+                    <span class="card-link">Manage Payments →</span>
+                </a>
+
+                <a href="/update-status" class="card">
+                    <div class="card-icon">↻</div>
+                    <h3>Update Order Status</h3>
+                    <p>Track laundry orders from Waiting to Processing and Ready.</p>
+                    <span class="card-link">Update Status →</span>
+                </a>
+
+                <a href="/sales-report" class="card">
+                    <div class="card-icon">▥</div>
+                    <h3>Sales Report</h3>
+                    <p>Review sales, payments received, and outstanding balances.</p>
+                    <span class="card-link">View Report →</span>
+                </a>
+
+            </section>
+
+        </main>
+
+        <footer>
+            © 2026 Laundry Shop Management System. All rights reserved.
+        </footer>
+
+    </div>
+
+</div>
+
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("/static/sw.js")
+                .then(function () {
+                    console.log("Service Worker registered!");
+                })
+                .catch(function (error) {
+                    console.log("Service Worker registration failed:", error);
+                });
+        });
+    }
+</script>
+
+</body>
+</html>

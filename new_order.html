@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Order | Laundry Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .topbar {
+            background: #173b75;
+            color: white;
+            padding: 20px 6%;
+        }
+
+        .topbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            color: #bfdbfe;
+            font-size: 13px;
+        }
+
+        .page {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 18px;
+        }
+
+        .back {
+            display: inline-block;
+            text-decoration: none;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .05);
+        }
+
+        .form-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .form-header h1 {
+            font-size: 24px;
+            margin: 0 0 8px;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        form {
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            color: #1d4ed8;
+            margin: 0 0 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            color: #1e293b;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+        }
+
+        .hint {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        .service-note {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 15px;
+            border-radius: 9px;
+            margin-top: 22px;
+        }
+
+        .service-note strong {
+            color: #1d4ed8;
+            font-size: 13px;
+        }
+
+        .service-note p {
+            color: #475569;
+            font-size: 12px;
+            line-height: 1.7;
+            margin: 7px 0 0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 22px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                margin: 22px auto;
+            }
+
+            .form-header, form {
+                padding: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 17px;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h2>🧺 Laundry Shop</h2>
+        <p>Management System</p>
+    </header>
+
+    <main class="page">
+
+        <a href="/" class="back">← Back to Dashboard</a>
+
+        <div class="container">
+
+            <div class="form-header">
+                <h1>Create New Order</h1>
+                <p>Enter the customer's information and laundry service details.</p>
+            </div>
+
+            <form action="/add-order" method="POST">
+
+                <h3 class="section-title">Customer Information</h3>
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="customer_name">Customer Name</label>
+                        <input type="text" id="customer_name"
+                               name="customer_name"
+                               placeholder="Enter customer name" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="contact_number">Contact Number</label>
+                        <input type="tel" id="contact_number"
+                               name="contact_number"
+                               placeholder="Enter contact number" required>
+                    </div>
+
+                </div>
+
+                <br>
+
+                <h3 class="section-title">Laundry Service Details</h3>
+
+                <div class="form-grid">
+
+                    <div class="field full">
+                        <label for="service">Service Type</label>
+                        <select id="service" name="service" required>
+                            <option value="">Select laundry service</option>
+                            <option value="Wash Only">Wash Only - ₱30/kg</option>
+                            <option value="Wash and Dry">Wash and Dry - ₱40/kg</option>
+                            <option value="Wash, Dry and Fold">Wash, Dry and Fold - ₱50/kg</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" id="weight" name="weight"
+                               min="0.1" step="0.1"
+                               placeholder="Enter weight" required>
+                        <span class="hint">Enter the laundry weight in kilograms.</span>
+                    </div>
+
+                    <div class="field">
+                        <label for="due_date">Due Date</label>
+                        <input type="date" id="due_date"
+                               name="due_date" required>
+                    </div>
+
+                </div>
+
+                <div class="service-note">
+                    <strong>Service Price Guide</strong>
+                    <p>
+                        Wash Only: ₱30 per kg<br>
+                        Wash and Dry: ₱40 per kg<br>
+                        Wash, Dry and Fold: ₱50 per kg
+                    </p>
+                </div>
+
+                <div class="actions">
+                    <a href="/" class="cancel">Cancel</a>
+                    <button type="submit">Create Order</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Laundry Shop Management System
+    </footer>
+
+</body>
+</html>

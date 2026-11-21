@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report | Laundry Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .topbar {
+            background: #173b75;
+            color: white;
+            padding: 20px 6%;
+        }
+
+        .topbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: #bfdbfe;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 22px;
+        }
+
+        .heading {
+            margin-bottom: 28px;
+        }
+
+        .heading h1 {
+            margin: 0 0 8px;
+            font-size: 26px;
+        }
+
+        .heading p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            color: #173b75;
+            margin-bottom: 18px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .05);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 20px 0 0;
+            color: #173b75;
+            font-size: 27px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .card-description {
+            margin-top: 8px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .sales-card {
+            border-top: 4px solid #2563eb;
+        }
+
+        .payments-card {
+            border-top: 4px solid #16a34a;
+        }
+
+        .balance-card {
+            border-top: 4px solid #f59e0b;
+        }
+
+        .orders-card {
+            border-top: 4px solid #64748b;
+        }
+
+        .note {
+            margin-top: 25px;
+            padding: 17px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 9px;
+            color: #1e40af;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .card {
+                padding: 21px;
+            }
+
+            .heading h1 {
+                font-size: 23px;
+            }
+
+            .card p {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h2>🧺 Laundry Shop</h2>
+        <p>Management System</p>
+    </header>
+
+    <main class="page">
+
+        <a href="/" class="back">← Back to Dashboard</a>
+
+        <section class="heading">
+            <h1>Sales Report</h1>
+            <p>Monitor the laundry shop's overall sales and financial summary.</p>
+        </section>
+
+        <h3 class="section-title">Sales Summary</h3>
+
+        <section class="summary">
+
+            <div class="card orders-card">
+                <div class="card-top">
+                    <h3>Total Orders</h3>
+                    <div class="icon">🧾</div>
+                </div>
+
+                <p>{{ summary[0] }}</p>
+                <div class="card-description">All recorded laundry orders</div>
+            </div>
+
+            <div class="card sales-card">
+                <div class="card-top">
+                    <h3>Total Sales</h3>
+                    <div class="icon">💰</div>
+                </div>
+
+                <p>₱{{ "%.2f"|format(summary[1]) }}</p>
+                <div class="card-description">Total value of all orders</div>
+            </div>
+
+            <div class="card payments-card">
+                <div class="card-top">
+                    <h3>Total Payments Received</h3>
+                    <div class="icon">💳</div>
+                </div>
+
+                <p>₱{{ "%.2f"|format(summary[2]) }}</p>
+                <div class="card-description">Payments collected from customers</div>
+            </div>
+
+            <div class="card balance-card">
+                <div class="card-top">
+                    <h3>Outstanding Balance</h3>
+                    <div class="icon">📋</div>
+                </div>
+
+                <p>₱{{ "%.2f"|format(summary[3]) }}</p>
+                <div class="card-description">Remaining unpaid customer balances</div>
+            </div>
+
+        </section>
+
+        <div class="note">
+            <strong>Report Information</strong><br>
+            This summary shows the total recorded orders, total sales,
+            payments received, and remaining customer balances.
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Laundry Shop Management System
+    </footer>
+
+</body>
+</html>

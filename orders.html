@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Orders | Laundry Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .topbar {
+            background: #173b75;
+            color: white;
+            padding: 20px 6%;
+        }
+
+        .topbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: #bfdbfe;
+        }
+
+        .page {
+            max-width: 1500px;
+            margin: 35px auto;
+            padding: 0 25px;
+        }
+
+        .back {
+            display: inline-block;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            font-size: 25px;
+            margin: 0 0 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .table-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .05);
+        }
+
+        .table-title {
+            font-size: 16px;
+            margin: 0 0 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        th {
+            background: #173b75;
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        th:first-child {
+            border-radius: 7px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 7px 0 0;
+        }
+
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .order-id {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .order-id:hover,
+        .view-link:hover {
+            text-decoration: underline;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .unpaid {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .partial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .waiting {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .processing {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .ready {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .delayed {
+            display: inline-block;
+            margin-top: 6px;
+            color: #dc2626;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .view-link {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 8px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #64748b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+
+            .table-container {
+                padding: 13px;
+            }
+
+            .heading h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h2>🧺 Laundry Shop</h2>
+        <p>Management System</p>
+    </header>
+
+    <main class="page">
+
+        <a href="/" class="back">← Back to Dashboard</a>
+
+        <section class="heading">
+            <h1>All Laundry Orders</h1>
+            <p>View and monitor all customer laundry transactions.</p>
+        </section>
+
+        <div class="table-container">
+
+            <h3 class="table-title">Order Records</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Contact</th>
+                        <th>Service</th>
+                        <th>Weight</th>
+                        <th>Total</th>
+                        <th>Payment Status</th>
+                        <th>Order Status</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for order in orders %}
+                    <tr>
+
+                        <td>
+                            <a href="/order/{{ order[0] }}" class="order-id">
+                                {{ order[0] }}
+                            </a>
+                        </td>
+
+                        <td>{{ order[1] }}</td>
+                        <td>{{ order[2] }}</td>
+                        <td>{{ order[3] }}</td>
+                        <td>{{ order[4] }} kg</td>
+                        <td>₱{{ "%.2f"|format(order[5]) }}</td>
+
+                        <td>
+                            {% if order[6] <= 0 %}
+                                <span class="badge unpaid">Unpaid</span>
+                            {% elif order[6] < order[5] %}
+                                <span class="badge partial">Partially Paid</span>
+                            {% else %}
+                                <span class="badge paid">Fully Paid</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if order[8] == "Waiting" %}
+                                <span class="badge waiting">Waiting</span>
+                            {% elif order[8] == "Processing" %}
+                                <span class="badge processing">Processing</span>
+                            {% elif order[8] == "Ready" %}
+                                <span class="badge ready">Ready</span>
+                            {% else %}
+                                {{ order[8] }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ order[9] }}
+
+                            {% if order[9] and order[9] < today and order[8] != "Ready" %}
+                                <br>
+                                <span class="delayed">⚠ Delayed</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <a href="/order/{{ order[0] }}" class="view-link">
+                                View Details
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="empty">
+                            No orders found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Laundry Shop Management System
+    </footer>
+
+</body>
+</html>
