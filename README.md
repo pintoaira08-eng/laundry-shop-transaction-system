@@ -1,28 +1,30 @@
-## 🌐 Live Website
 
-Access the Laundry Shop Transaction System here:
-
-[Open Laundry Shop System](https://laundry-shop-transaction-system.onrender.com)
 # Laundry Shop Transaction System
 
-A web-based Laundry Shop Transaction System developed using Python and Flask. It helps manage laundry orders, customer payments, order status, and sales records through a simple and user-friendly interface.
+A web-based Laundry Shop Transaction System developed using Python and Flask. This system helps manage laundry orders, customer information, payments, order status, and sales records through a simple and user-friendly interface.
+
+## 🌐 Live Website
+
+Access the deployed application here:
+
+[Open Laundry Shop System](https://laundry-shop-transaction-system.onrender.com)
 
 ## Features
 
 - Dashboard
 - Add New Order
-- Automatic Order ID generation
-- Service and weight-based pricing
-- Customer information management
+- Automatic Order ID Generation
+- Service and Weight-Based Pricing
+- Customer Information Management
 - Search Order
 - View All Orders
-- Payment recording and balance tracking
+- Payment Recording and Balance Tracking
 - Update Order Status
 - Sales Report
-- Delayed order monitoring
-- SQLite database storage
-- Responsive design for desktop and mobile screens
-- Progressive Web App (PWA) support
+- Delayed Order Monitoring
+- SQLite Database Storage
+- Responsive Design for Desktop and Mobile
+- Progressive Web App (PWA) Support
 
 ## Laundry Services
 
@@ -45,7 +47,7 @@ A web-based Laundry Shop Transaction System developed using Python and Flask. It
 
 1. Clone this repository.
 2. Open the project folder.
-3. Install the required dependency:
+3. Install the required dependencies:
 
    ```bash
    pip install -r requirements.txt
@@ -59,11 +61,11 @@ A web-based Laundry Shop Transaction System developed using Python and Flask. It
 
 5. Open your browser and visit:
 
-   http://127.0.0.1:5000
+   `http://127.0.0.1:5000`
 
 ## Project Status
 
-This project is currently under development. It runs locally and uses SQLite for database storage.
+The application is deployed online using Render and is developed for academic project demonstration.
 
 ## Developer
 
