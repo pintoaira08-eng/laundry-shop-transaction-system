@@ -322,5 +322,134 @@
         © 2026 Laundry Shop Management System
     </footer>
 
+                                <script src="{{ url_for('static', filename='offline.js') }}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const tableBody = document.getElementById("ordersTableBody");
+
+    try {
+        const offlineOrders = await LaundryOffline.getOfflineOrders();
+
+        if (!offlineOrders || offlineOrders.length === 0) {
+            return;
+        }
+
+        const existingIDs = Array.from(
+            tableBody.querySelectorAll(".order-id")
+        ).map(link => link.textContent.trim());
+
+        const money = amount =>
+            "₱" + Number(amount).toFixed(2);
+
+        offlineOrders.forEach(order => {
+
+            if (existingIDs.includes(order.order_id)) {
+                return;
+            }
+
+            const row = document.createElement("tr");
+
+            const remaining =
+                Number(order.total_amount) - Number(order.amount_paid);
+
+            let paymentStatus = "Unpaid";
+
+            if (order.amount_paid > 0 && remaining > 0) {
+                paymentStatus = "Partially Paid";
+            } else if (remaining <= 0) {
+                paymentStatus = "Fully Paid";
+            }
+
+            const status = order.status || "Waiting";
+
+            const today = new Date().toISOString().slice(0, 10);
+
+            const delayed =
+                order.due_date &&
+                order.due_date < today &&
+                status !== "Ready";
+
+            const values = [
+                order.order_id,
+                order.customer_name,
+                order.contact_number,
+                order.service,
+                order.weight + " kg",
+                money(order.total_amount),
+                paymentStatus,
+                status,
+                order.due_date || "",
+                "Saved on this device"
+            ];
+
+            values.forEach((value, index) => {
+
+                const cell = document.createElement("td");
+
+                if (index === 0) {
+                    const strong = document.createElement("strong");
+                    strong.textContent = value;
+                    cell.appendChild(strong);
+
+                } else if (index === 6) {
+                    const badge = document.createElement("span");
+                    badge.className = "badge " +
+                        (paymentStatus === "Fully Paid"
+                            ? "paid"
+                            : paymentStatus === "Partially Paid"
+                                ? "partial"
+                                : "unpaid");
+
+                    badge.textContent = paymentStatus;
+                    cell.appendChild(badge);
+
+                } else if (index === 7) {
+                    const badge = document.createElement("span");
+
+                    badge.className = "badge " +
+                        (status === "Waiting"
+                            ? "waiting"
+                            : status === "Processing"
+                                ? "processing"
+                                : "ready");
+
+                    badge.textContent = status;
+                    cell.appendChild(badge);
+
+                } else if (index === 8 && delayed) {
+                    cell.textContent = value;
+
+                    const warning = document.createElement("span");
+                    warning.className = "delayed";
+                    warning.textContent = " ⚠ Delayed";
+
+                    cell.appendChild(document.createElement("br"));
+                    cell.appendChild(warning);
+
+                } else {
+                    cell.textContent = value;
+                }
+
+                row.appendChild(cell);
+            });
+
+            tableBody.appendChild(row);
+        });
+
+        const emptyRow = tableBody.querySelector(".empty");
+
+        if (emptyRow && offlineOrders.length > 0) {
+            emptyRow.closest("tr").remove();
+        }
+
+    } catch (error) {
+        console.error("Unable to load offline orders:", error);
+    }
+
+});
+</script>
+
 </body>
 </html>
