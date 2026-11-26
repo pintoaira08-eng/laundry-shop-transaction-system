@@ -1,9 +1,10 @@
-const CACHE_NAME = "laundry-shop-v2";
+const CACHE_NAME = "laundry-shop-v3";
 
 const FILES_TO_CACHE = [
     "/",
     "/static/manifest.json",
-    "/static/offline.js"
+    "/static/offline.js",
+    "/static/offline-order.html"
 ];
 
 self.addEventListener("install", (event) => {
@@ -31,6 +32,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+
     if (event.request.method !== "GET") {
         return;
     }
@@ -38,6 +40,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
         fetch(event.request)
             .then((response) => {
+
                 if (response && response.ok) {
                     const responseCopy = response.clone();
 
@@ -49,10 +52,20 @@ self.addEventListener("fetch", (event) => {
                 return response;
             })
             .catch(async () => {
+
                 const cachedResponse = await caches.match(event.request);
 
                 if (cachedResponse) {
                     return cachedResponse;
+                }
+
+                const url = new URL(event.request.url);
+
+                if (
+                    event.request.mode === "navigate" &&
+                    url.pathname.startsWith("/order/LS-OFF-")
+                ) {
+                    return caches.match("/static/offline-order.html");
                 }
 
                 if (event.request.mode === "navigate") {
