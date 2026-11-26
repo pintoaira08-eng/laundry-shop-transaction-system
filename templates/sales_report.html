@@ -258,5 +258,36 @@
         © 2026 Laundry Shop Management System
     </footer>
 
+    <script src="{{ url_for('static', filename='offline.js') }}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+    if (navigator.onLine) {
+        return;
+    }
+
+    try {
+        const summary = await LaundryOffline.getOfflineSalesSummary();
+
+        document.getElementById("totalOrders").textContent =
+            summary.total_orders;
+
+        document.getElementById("totalSales").textContent =
+            "₱" + Number(summary.total_sales).toFixed(2);
+
+        document.getElementById("totalPayments").textContent =
+            "₱" + Number(summary.total_payments).toFixed(2);
+
+        document.getElementById("outstandingBalance").textContent =
+            "₱" + Number(summary.outstanding_balance).toFixed(2);
+
+    } catch (error) {
+        console.error("Unable to load offline sales report:", error);
+    }
+
+});
+</script>
+
 </body>
 </html>
