@@ -310,5 +310,43 @@
         © 2026 Laundry Shop Management System
     </footer>
 
+    <script src="{{ url_for('static', filename='offline.js') }}"></script>
+
+<script>
+document.getElementById("offlineOrderForm").addEventListener("submit", async function(event) {
+
+    if (navigator.onLine) {
+        return;
+    }
+
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    const orderData = {
+        customer_name: formData.get("customer_name"),
+        contact_number: formData.get("contact_number"),
+        service: formData.get("service"),
+        weight: formData.get("weight"),
+        due_date: formData.get("due_date")
+    };
+
+    try {
+        const order = await LaundryOffline.addOfflineOrder(orderData);
+
+        alert(
+            "Order successfully saved offline!\nOrder ID: " +
+            order.order_id
+        );
+
+        this.reset();
+
+    } catch (error) {
+        alert(error.message);
+    }
+
+});
+</script>
+
 </body>
 </html>
