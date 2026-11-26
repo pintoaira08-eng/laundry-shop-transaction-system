@@ -278,5 +278,72 @@
         © 2026 Laundry Shop Management System
     </footer>
 
+     <script src="{{ url_for('static', filename='offline.js') }}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+    if (navigator.onLine) {
+        return;
+    }
+
+    const orderID = window.location.pathname.split("/").pop();
+
+    if (!orderID.startsWith("LS-OFF-")) {
+        return;
+    }
+
+    try {
+        const order = await LaundryOffline.findOfflineOrder(orderID);
+
+        if (!order) {
+            document.querySelector(".page").innerHTML =
+                "<h2>Order not found on this device.</h2>" +
+                '<a href="/orders">Back to Orders</a>';
+            return;
+        }
+
+        const money = amount => "₱" + Number(amount).toFixed(2);
+
+        const remaining = Math.max(
+            Number(order.total_amount) - Number(order.amount_paid), 0
+        );
+
+        const paymentStatus =
+            order.amount_paid <= 0 ? "Unpaid" :
+            order.amount_paid < order.total_amount ? "Partially Paid" :
+            "Fully Paid";
+
+        document.querySelector("#customerInformation").innerHTML = `
+            <h3>Customer Information</h3>
+            <div class="detail"><span>Order ID</span><strong>${order.order_id}</strong></div>
+            <div class="detail"><span>Customer Name</span><strong>${order.customer_name}</strong></div>
+            <div class="detail"><span>Contact Number</span><strong>${order.contact_number}</strong></div>
+        `;
+
+        document.querySelector("#serviceInformation").innerHTML = `
+            <h3>Service Information</h3>
+            <div class="detail"><span>Service Type</span><strong>${order.service}</strong></div>
+            <div class="detail"><span>Weight</span><strong>${order.weight} kg</strong></div>
+            <div class="detail"><span>Due Date</span><strong>${order.due_date}</strong></div>
+            <div class="detail"><span>Order Status</span><strong>${order.status}</strong></div>
+        `;
+
+        document.querySelector("#paymentInformation").innerHTML = `
+            <h3>Payment Summary</h3>
+            <div class="detail"><span>Total Amount</span><strong class="amount">${money(order.total_amount)}</strong></div>
+            <div class="detail"><span>Amount Paid</span><strong>${money(order.amount_paid)}</strong></div>
+            <div class="detail"><span>Change</span><strong>${money(order.change || 0)}</strong></div>
+            <div class="detail"><span>Payment Status</span><strong>${paymentStatus}</strong></div>
+            <div class="detail"><span>Remaining Balance</span><strong class="amount">${money(remaining)}</strong></div>
+        `;
+
+    } catch (error) {
+        console.error("Unable to load offline order details:", error);
+    }
+
+});
+</script>                   
+
 </body>
 </html>
