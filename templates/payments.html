@@ -261,7 +261,7 @@
 
             <h3>Find Customer Order</h3>
 
-            <form method="POST" action="/payments">
+           <form id="offlinePaymentSearchForm" method="POST" action="/payments">
 
                 <label for="order_id">Enter Order ID</label>
 
@@ -325,7 +325,7 @@
 
                 <h4>Record a Payment</h4>
 
-                <form method="POST" action="/payments">
+                <form id="offlineRecordPaymentForm" method="POST" action="/payments">
 
                     <input type="hidden" name="order_id" value="{{ order[0] }}">
 
