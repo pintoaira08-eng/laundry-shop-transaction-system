@@ -210,7 +210,7 @@
                     <div class="icon">🧾</div>
                 </div>
 
-                <p>{{ summary[0] }}</p>
+                <p id="totalOrders">{{ summary[0] }}</p>
                 <div class="card-description">All recorded laundry orders</div>
             </div>
 
@@ -220,7 +220,7 @@
                     <div class="icon">💰</div>
                 </div>
 
-                <p>₱{{ "%.2f"|format(summary[1]) }}</p>
+                <p id="totalSales">₱{{ "%.2f"|format(summary[1]) }}</p>
                 <div class="card-description">Total value of all orders</div>
             </div>
 
@@ -230,7 +230,7 @@
                     <div class="icon">💳</div>
                 </div>
 
-                <p>₱{{ "%.2f"|format(summary[2]) }}</p>
+                <p id="totalPayments">₱{{ "%.2f"|format(summary[2]) }}</p>
                 <div class="card-description">Payments collected from customers</div>
             </div>
 
@@ -240,7 +240,7 @@
                     <div class="icon">📋</div>
                 </div>
 
-                <p>₱{{ "%.2f"|format(summary[3]) }}</p>
+                <p id="outstandingBalance">₱{{ "%.2f"|format(summary[3]) }}</p>
                 <div class="card-description">Remaining unpaid customer balances</div>
             </div>
 
