@@ -407,5 +407,117 @@
         © 2026 Laundry Shop Management System
     </footer>
 
+    <script src="{{ url_for('static', filename='offline.js') }}"></script>
+
+<script>
+document.getElementById("offlinePaymentSearchForm").addEventListener("submit", async function(event) {
+
+    if (navigator.onLine) {
+        return;
+    }
+
+    event.preventDefault();
+
+    const orderID = document.getElementById("order_id").value.trim().toUpperCase();
+
+    try {
+        const order = await LaundryOffline.findOfflineOrder(orderID);
+
+        const oldResult = document.getElementById("offlinePaymentResult");
+
+        if (oldResult) {
+            oldResult.remove();
+        }
+
+        const result = document.createElement("div");
+        result.id = "offlinePaymentResult";
+        result.className = "card";
+
+        if (!order) {
+            result.innerHTML = `
+                <h3>Order Not Found</h3>
+                <p>This order is not saved on this device.</p>
+            `;
+
+        } else {
+            const money = amount => "₱" + Number(amount).toFixed(2);
+            const remaining = Math.max(
+                Number(order.total_amount) - Number(order.amount_paid), 0
+            );
+
+            result.innerHTML = `
+                <h3>Payment Details</h3>
+                <div class="detail"><span>Order ID</span><strong>${order.order_id}</strong></div>
+                <div class="detail"><span>Customer Name</span><strong>${order.customer_name}</strong></div>
+                <div class="detail"><span>Total Amount</span><strong>${money(order.total_amount)}</strong></div>
+                <div class="detail"><span>Amount Paid</span><strong>${money(order.amount_paid)}</strong></div>
+                <div class="detail"><span>Remaining Balance</span><strong>${money(remaining)}</strong></div>
+            `;
+
+            if (remaining > 0) {
+                const paymentForm = document.createElement("form");
+                paymentForm.id = "offlineRecordPaymentForm";
+
+                paymentForm.innerHTML = `
+                    <h4>Record a Payment</h4>
+                    <label for="offlinePaymentAmount">Payment Amount (₱)</label>
+                    <input type="number" id="offlinePaymentAmount"
+                        min="0.01" max="${remaining}" step="0.01"
+                        placeholder="Enter payment amount" required>
+                    <button type="submit">Record Payment</button>
+                `;
+
+                result.appendChild(paymentForm);
+
+                paymentForm.addEventListener("submit", async function(paymentEvent) {
+                    paymentEvent.preventDefault();
+
+                    try {
+                        const amount = document.getElementById("offlinePaymentAmount").value;
+
+                        await LaundryOffline.addOfflinePayment(order.order_id, amount);
+
+                        alert("Payment successfully saved offline!");
+
+                        document.getElementById("offlinePaymentSearchForm").requestSubmit();
+
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                });
+
+            } else {
+                const paid = document.createElement("p");
+                paid.textContent = "✓ This order is fully paid.";
+                result.appendChild(paid);
+            }
+
+            const history = await LaundryOffline.getOfflinePaymentHistory(order.order_id);
+
+            if (history.length > 0) {
+                const heading = document.createElement("h3");
+                heading.textContent = "Payment History";
+                result.appendChild(heading);
+
+                history.forEach(payment => {
+                    const item = document.createElement("p");
+                    item.textContent =
+                        money(payment.amount) + " - " +
+                        new Date(payment.payment_date).toLocaleString();
+
+                    result.appendChild(item);
+                });
+            }
+        }
+
+        this.insertAdjacentElement("afterend", result);
+
+    } catch (error) {
+        alert("Unable to process offline payment: " + error.message);
+    }
+
+});
+</script>
+
 </body>
 </html>
