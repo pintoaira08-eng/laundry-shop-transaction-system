@@ -196,7 +196,7 @@
                 <div class="message">{{ message }}</div>
             {% endif %}
 
-            <form method="POST">
+           <form id="offlineStatusForm" method="POST">
 
                 <label for="order_id">Order ID</label>
 
@@ -235,6 +235,41 @@
     <footer>
         © 2026 Laundry Shop Management System
     </footer>
+
+    <script src="{{ url_for('static', filename='offline.js') }}"></script>
+
+<script>
+document.getElementById("offlineStatusForm").addEventListener("submit", async function(event) {
+
+    if (navigator.onLine) {
+        return;
+    }
+
+    event.preventDefault();
+
+    const orderID = document.getElementById("order_id").value.trim().toUpperCase();
+    const newStatus = document.getElementById("new_status").value;
+
+    try {
+        const order = await LaundryOffline.findOfflineOrder(orderID);
+
+        if (!order) {
+            alert("Order not found on this device.");
+            return;
+        }
+
+        await LaundryOffline.updateOfflineStatus(orderID, newStatus);
+
+        alert("Order status successfully updated offline!\nNew Status: " + newStatus);
+
+        this.reset();
+
+    } catch (error) {
+        alert(error.message);
+    }
+
+});
+</script>
 
 </body>
 </html>
