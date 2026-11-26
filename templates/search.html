@@ -254,5 +254,73 @@
         © 2026 Laundry Shop Management System
     </footer>
 
+    <script src="{{ url_for('static', filename='offline.js') }}"></script>
+
+<script>
+document.getElementById("offlineSearchForm").addEventListener("submit", async function(event) {
+
+    if (navigator.onLine) {
+        return;
+    }
+
+    event.preventDefault();
+
+    const orderID = document.getElementById("order_id").value.trim().toUpperCase();
+
+    try {
+        const order = await LaundryOffline.findOfflineOrder(orderID);
+
+        const oldResult = document.querySelector(".offline-result");
+
+        if (oldResult) {
+            oldResult.remove();
+        }
+
+        const result = document.createElement("div");
+        result.className = "result offline-result";
+
+        if (order) {
+            result.classList.add("success");
+
+            const title = document.createElement("strong");
+            title.textContent = "✓ Order Found!";
+
+            const details = document.createElement("p");
+            details.textContent =
+                "Order " + order.order_id +
+                " belongs to " + order.customer_name + ".";
+
+            const service = document.createElement("p");
+            service.textContent =
+                "Service: " + order.service +
+                " | Weight: " + order.weight + " kg";
+
+            const status = document.createElement("p");
+            status.textContent = "Status: " + order.status;
+
+            result.append(title, details, service, status);
+
+        } else {
+            result.classList.add("not-found");
+
+            const title = document.createElement("strong");
+            title.textContent = "✕ Order Not Found";
+
+            const details = document.createElement("p");
+            details.textContent =
+                "This order is not saved on this device.";
+
+            result.append(title, details);
+        }
+
+        this.insertAdjacentElement("afterend", result);
+
+    } catch (error) {
+        alert("Unable to search offline: " + error.message);
+    }
+
+});
+</script>
+
 </body>
 </html>
