@@ -1,1 +1,246 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Order Details | Laundry Shop</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .topbar {
+            background: #173b75;
+            color: white;
+            padding: 20px 6%;
+        }
+
+        .topbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: #bfdbfe;
+        }
+
+        .page {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 22px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, .05);
+        }
+
+        .card h3 {
+            margin: 0 0 18px;
+            font-size: 16px;
+            color: #173b75;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail span {
+            color: #64748b;
+        }
+
+        .detail strong {
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .amount {
+            color: #173b75;
+            font-size: 17px;
+        }
+
+        .message {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 500px) {
+            .page {
+                margin: 25px auto;
+                padding: 0 14px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <h2>🧺 Laundry Shop</h2>
+    <p>Offline Order Details</p>
+</header>
+
+<main class="page">
+
+    <a href="/orders" class="back">← Back to Orders</a>
+
+    <div id="orderDetails" class="message">
+        Loading order details...
+    </div>
+
+</main>
+
+<footer class="footer">
+    © 2026 Laundry Shop Management System
+</footer>
+
+<script src="/static/offline.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const container = document.getElementById("orderDetails");
+    const orderID = window.location.pathname.split("/").pop();
+
+    try {
+        const order = await LaundryOffline.findOfflineOrder(orderID);
+
+        if (!order) {
+            container.textContent =
+                "Order not found on this device.";
+            return;
+        }
+
+        const money = amount =>
+            "₱" + Number(amount || 0).toFixed(2);
+
+        const remaining = Math.max(
+            Number(order.total_amount) - Number(order.amount_paid), 0
+        );
+
+        const paymentStatus =
+            order.amount_paid <= 0 ? "Unpaid" :
+            order.amount_paid < order.total_amount
+                ? "Partially Paid" : "Fully Paid";
+
+        const sections = [
+            {
+                title: "Customer Information",
+                details: [
+                    ["Order ID", order.order_id],
+                    ["Customer Name", order.customer_name],
+                    ["Contact Number", order.contact_number]
+                ]
+            },
+            {
+                title: "Service Information",
+                details: [
+                    ["Service Type", order.service],
+                    ["Weight", order.weight + " kg"],
+                    ["Due Date", order.due_date],
+                    ["Order Status", order.status]
+                ]
+            },
+            {
+                title: "Payment Summary",
+                details: [
+                    ["Total Amount", money(order.total_amount)],
+                    ["Amount Paid", money(order.amount_paid)],
+                    ["Change", money(order.change)],
+                    ["Payment Status", paymentStatus],
+                    ["Remaining Balance", money(remaining)]
+                ]
+            }
+        ];
+
+        container.className = "";
+
+        sections.forEach(section => {
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            const heading = document.createElement("h3");
+            heading.textContent = section.title;
+            card.appendChild(heading);
+
+            section.details.forEach(([label, value]) => {
+
+                const row = document.createElement("div");
+                row.className = "detail";
+
+                const labelElement = document.createElement("span");
+                labelElement.textContent = label;
+
+                const valueElement = document.createElement("strong");
+                valueElement.textContent = value ?? "";
+
+                if (label === "Total Amount" ||
+                    label === "Remaining Balance") {
+                    valueElement.className = "amount";
+                }
+
+                row.append(labelElement, valueElement);
+                card.appendChild(row);
+            });
+
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        container.textContent =
+            "Unable to load order details: " + error.message;
+    }
+
+});
+</script>
+
+</body>
+</html>
+
